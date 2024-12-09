@@ -1,0 +1,8 @@
+# THESE VARIABLES ARE REPLACED ON BUILD BY maven-resource-plugin
+# OUTPUT: properties/generatedProperties.yaml
+# !!! HANDLE WITH CARE !!!
+# FILE TO REFERENCE IN MULE PROJECT: properties/generatedProperties.yaml
+# VARIABLE USAGE AS NORMAL (e.g. ${system.groupId})
+
+system:
+  groupId: '${groupId}'

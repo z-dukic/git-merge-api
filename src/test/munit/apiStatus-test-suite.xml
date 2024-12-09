@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="apiStatus-test-suite.xml" />
+	<munit:test name="holeApiStatusFlow-erfolgreich-test" doc:id="e955557c-c07d-4875-9e68-047b9c6f8fca" description="Testet, dass der Api Status gesetzt wird.">
+		<munit:execution >
+			<flow-ref doc:name="Hole Api Status" doc:id="b54a00bf-ad5d-4cf1-a06f-715236cc797d" name="holeApiStatusFlow"/>
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:verify-call doc:name="Setze API Status wurde aufgerufen" doc:id="40d823bf-5caa-4a1b-a552-c61265819fa8" processor="set-payload">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="cda971f7-8326-42ac-953e-93ce262477f0" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	
+
+</mule>

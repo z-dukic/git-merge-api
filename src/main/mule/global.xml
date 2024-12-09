@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:njams="http://www.mulesoft.org/schema/mule/njams"
+	xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/njams http://www.mulesoft.org/schema/mule/njams/current/mule-njams.xsd">
+	<configuration-properties doc:name="API Properties" doc:id="12b9d91d-d82a-4a9e-89a8-7d9a2afa38d1" file="properties/apiProperties.yaml" />
+	<configuration-properties doc:name="Generated Maven Properties" doc:id="12b9d91d-d82a-4a9e-89a8-7d9a2afa38d1" file="properties/generatedProperties.yaml" />
+	<configuration-properties doc:name="Environment properties" doc:id="2a5a8ef5-06ca-40dc-a2c9-7daadd7d0b45" file="properties/environment/${mule.env}Properties.yaml" />
+	<global-property doc:name="Global Property" doc:id="a049c954-10eb-4fd4-bf9e-eb7e59c21e54" name="mule.env" value="local" />
+	<configuration doc:name="Global Error Handler Configuration" doc:id="debb8bec-9ca7-452e-afb3-badc3f2df3ab" defaultErrorHandler-ref="globalErrorHandler" />
+	<configuration-properties doc:name="Log properties" doc:id="49af3598-2447-4b30-9b55-b9b934b5abef" file="properties/logProperties.yaml" />
+</mule>

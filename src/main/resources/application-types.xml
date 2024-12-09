@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="example" format="json">
+      <types:shape format="weave" example="examples/example-schema.json"><![CDATA[%dw 2.0
+
+type example = {| some: String |} {"example": "{\\\"some\\\":\\\"value\\\"}"}
+
+]]></types:shape>
+    </types:type>
+  </types:catalog>
+</types:mule>

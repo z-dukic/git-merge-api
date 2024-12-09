@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:scripting="http://www.mulesoft.org/schema/mule/scripting" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/scripting http://www.mulesoft.org/schema/mule/scripting/current/mule-scripting.xsd">
+	<flow name="holeApiStatusFlow" doc:id="9784c9cd-9197-46a1-b795-d1660fc78563" >
+		<scripting:execute engine="Groovy" doc:id="76e890c3-98af-4636-97e4-43bccb90704b" doc:name="Hole flows und ihre Status und Statistiken" target="flows">
+			<scripting:code ><![CDATA[import org.mule.runtime.core.api.construct.Flow
+import org.mule.runtime.core.api.lifecycle.LifecycleState
+import org.mule.runtime.core.api.management.stats.FlowConstructStatistics;
+
+class MuleFlow {
+	final String name
+	final String initialState
+	final String currentState
+	final MuleFlowStatistics muleFlowStatistics
+	
+	MuleFlow(Flow flow) {
+		this.name = flow.getName()
+		this.initialState = flow.getInitialState()
+		this.currentState = MuleFlow.transformLifecycleStateToString(flow.getLifecycleState())
+		FlowConstructStatistics flowStatistics = flow.getStatistics()
+		this.muleFlowStatistics = new MuleFlowStatistics(flowStatistics)
+	}
+	
+	class MuleFlowStatistics{
+		final long minProcessingTime
+		final long averageProcessingTime
+		final long maxProcessingTime
+		final long totalProcessingTime
+		
+		final long numberOfProcessedEvents
+		final long numberOfExecutionErrors
+		final long numberOfFatalErrors
+		final long totalEventsReceived
+		
+		MuleFlowStatistics(FlowConstructStatistics flowStatistics){
+			this.minProcessingTime = flowStatistics.getMinProcessingTime()
+			this.averageProcessingTime = flowStatistics.getAverageProcessingTime()
+			this.maxProcessingTime = flowStatistics.getMaxProcessingTime()
+			this.totalProcessingTime = flowStatistics.getTotalProcessingTime()
+			
+			this.numberOfProcessedEvents = flowStatistics.getProcessedEvents()
+			this.numberOfExecutionErrors = flowStatistics.getExecutionErrors()
+			this.numberOfFatalErrors = flowStatistics.getFatalErrors()
+			this.totalEventsReceived = flowStatistics.getTotalEventsReceived()
+		}
+	}
+	
+	static String transformLifecycleStateToString(LifecycleState lifecycleState){
+		if (lifecycleState.isDisposed()) {
+			return "disposed"
+		}else if (lifecycleState.isDisposing()) {
+			return "disposing"
+		}else if (lifecycleState.isStopped()) {
+			return "stopped"
+		}else if (lifecycleState.isStopping()) {
+			return "stopping"
+		}else if (lifecycleState.isStarted()) {
+			return "started"
+		}else if (lifecycleState.isStarting()) {
+			return "starting"
+		}else if (lifecycleState.isInitialised()) {
+			return "initialized"
+		}else if (lifecycleState.isInitialising()) {
+			return "initializing"
+		}
+	}
+}
+
+def flowStatusList = []
+
+flows = registry.lookupAllByType(Flow.class)
+
+flows.each {
+	MuleFlow muleFlow = new MuleFlow(it)
+	flowStatusList.add(muleFlow)
+}
+
+result = flowStatusList]]></scripting:code>
+
+		</scripting:execute>
+		<set-payload value='#[%dw 2.0
+output application/json
+---
+{
+	"application": {
+		"name": p("app.name")
+	},
+	"api": {
+    	"name": p("api.name"),
+		"id": p("api.id"),
+	    "version": p("api.version")
+   	},
+    "environment": {
+		"name": p("mule.env")
+	},
+	"log": {
+		"baseCategory": p("log.baseCategory")
+	},
+    "status": {
+		"result": "pass",
+	    "details": "API is healthy"
+    },
+    "flows": map((vars.flows default []) as Array, (flow, key) -&gt; ({
+    	"name": flow.name as String default "",
+    	"initialState": flow.initialState as String default "",
+    	"currentState": flow.currentState as String default "",
+    	"statistics": {
+    		"minProcessingTimeInMilliseconds" : flow.muleFlowStatistics.minProcessingTime default 0,
+    		"averageProcessingTimeInMilliseconds" : flow.muleFlowStatistics.averageProcessingTime default 0,
+    		"maxProcessingTimeInMilliseconds" : flow.muleFlowStatistics.maxProcessingTime default 0,
+    		"totalProcessingTimeInMilliseconds" : flow.muleFlowStatistics.totalProcessingTime default 0,
+    		
+    		"numberOfProcessedEvents" : flow.muleFlowStatistics.numberOfProcessedEvents default 0,
+    		"numberOfExecutionErrors" : flow.muleFlowStatistics.numberOfExecutionErrors default 0,
+    		"numberOfFatalErrors" : flow.muleFlowStatistics.numberOfFatalErrors default 0,
+    		"totalEventsReceived" : flow.muleFlowStatistics.totalEventsReceived default 0
+    	}
+    })) default [],
+	"timestamp": now()
+}]' doc:name="Setze API Status" doc:id="cda971f7-8326-42ac-953e-93ce262477f0" />
+		<logger level="DEBUG" doc:name="Logge FlowEnde Payload" doc:id="c05441cc-6ae4-4a97-94c6-7c868bbe977c" category="${log.baseCategory}.apiStatus.getApiStatus.flowEndePayload" message="#[%dw 2.0
+output application/json
+---
+payload]"/>
+	</flow>
+</mule>

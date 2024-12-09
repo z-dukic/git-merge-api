@@ -1,0 +1,9 @@
+api:
+  # API-Type: eapi=experience API, papi=process API, sapi=system API
+  type: 'sapi|papi|eapi'
+  # API-Name: for SAPI only; it should be the system-name (like salesforce, oracledb, opuscapita, cumulus, tds, ...)
+  name: 'exampleservice' # all lowercase
+  # API-ID: The identifier of this API as defined by API-Management in Anypoint Platform.
+  # id: '0000'
+  version: 'v1'
+  basePath: '/${api.type}/${api.name}/${api.version}'

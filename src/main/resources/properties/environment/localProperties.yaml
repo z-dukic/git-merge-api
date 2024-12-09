@@ -1,0 +1,9 @@
+api:
+  id: '0000'
+
+environment:
+  logging:
+    level: 'DEBUG'
+
+http:
+  port: '8081'

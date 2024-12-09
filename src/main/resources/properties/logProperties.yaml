@@ -1,0 +1,3 @@
+log:
+  baseCategory: '${system.groupId}.${mule.env}.${api.type}.${api.name}'
+#  extraCategory: '${system.groupId}.${mule.env}.extra.${api.type}.${api.name}' # uncomment this line if you want to use the extra log, also enable according lines in log4j 

@@ -1,0 +1,44 @@
+api:
+  id: '123'  
+  client_id: '123'
+  client_secret: '123'
+
+https:
+  port: '8081'
+  private:
+    port: '8091'
+
+customers-papi:
+  port: "443"
+  host: "123"
+  basePath: "/2123/v1"
+  protocol: "HTTPS"
+  timeout: "10000"
+
+orders-papi:
+  port: "443"
+  host: "123"
+  basePath: "123"
+  protocol: "HTTPS"
+  timeout: "10000"
+
+finance-papi:
+  port: "443"
+  host: "123"
+  basePath: "123"
+  protocol: "HTTPS"
+  timeout: "10000"
+
+#Local/Dev
+salesforce:
+  username: '123'
+  client-id: "123"
+  client-secret: '123'
+  audience: "https://test.salesforce.com"
+  tokenurl: "https://test.salesforce.com/services/oauth2/token"
+  patchStock: '123'
+  password: '123'
+  certificate: 
+    alias: "mulesoft_integration_certificate"
+    keystore: "client_certificates\\dev.jks"
+    password: "123"
