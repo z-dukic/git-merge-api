@@ -9,11 +9,12 @@ https:
     port: '8091'
 
 customers-papi:
-  port: "111111"
-  host: "11111"
-  basePath: "/r11111rr/v1"
-  protocol: "11111"
-  timeout: "11111"
+  port: "2222"
+  host: "2222"
+  basePath: "/222/v1"
+  protocol: "rr2222r"
+  timeout: "222"
+
 
 orders-papi:
   port: "443"
